@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" role="img" aria-labelledby="b-title">
+  <title id="b-title">Branchly</title>
+  <g stroke="#14C8C2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 17.172 17.172 C 20.3 13.4 24.2 11.8 28.132 11.868" />
+    <path d="M 22.828 17.172 C 26.6 20.3 28.2 24.2 28.132 28.132" />
+    <path d="M 22.828 22.828 C 19.7 26.6 15.8 28.2 11.868 28.132" />
+    <path d="M 17.172 22.828 C 13.4 19.7 11.8 15.8 11.868 11.868" />
+  </g>
+  <g fill="#14C8C2">
+    <circle cx="28.132" cy="11.868" r="2.8" />
+    <circle cx="28.132" cy="28.132" r="2.8" />
+    <circle cx="11.868" cy="28.132" r="2.8" />
+    <circle cx="11.868" cy="11.868" r="2.8" />
+  </g>
+</svg>

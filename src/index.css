@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Brand — deep medical navy / blue */
+  --color-brand-950: #0b1730;
+  --color-brand-900: #0f1b3d;
+  --color-brand-800: #103055;
+  --color-brand-700: #16406f;
+  --color-brand-600: #1d5490;
+  --color-brand-500: #2569b3;
+  --color-brand-400: #4a8bd0;
+  --color-brand-300: #7cb0e5;
+  --color-brand-200: #b3d1f2;
+  --color-brand-100: #dbeafc;
+  --color-brand-50: #eff6fe;
+
+  /* Accent — teal / cyan */
+  --color-accent-700: #0e7490;
+  --color-accent-600: #0891a8;
+  --color-accent-500: #0fbab6;
+  --color-accent-400: #14c8c2;
+  --color-accent-300: #67d6e2;
+  --color-accent-100: #cff5fa;
+  --color-accent-50: #edfbfd;
+
+  /* Surfaces — very light cool grays */
+  --color-surface-0: #ffffff;
+  --color-surface-50: #f7f9fb;
+  --color-surface-100: #f0f3f7;
+  --color-surface-200: #e4e9f0;
+  --color-surface-300: #d2dae4;
+
+  /* Ink */
+  --color-ink-900: #0d1826;
+  --color-ink-700: #2c3b50;
+  --color-ink-500: #55657c;
+  --color-ink-400: #74849a;
+  --color-ink-300: #9aa8ba;
+
+  /* Semantic */
+  --color-fit-strong: #0d9465;
+  --color-fit-strong-bg: #e9f8f2;
+  --color-fit-moderate: #c07a12;
+  --color-fit-moderate-bg: #fdf5e6;
+  --color-fit-low: #c93c44;
+  --color-fit-low-bg: #fceced;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-50 text-ink-900 font-sans antialiased;
+    font-feature-settings: "cv05" 1, "ss01" 1;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-brand-500) 22%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Subtle clinical grid texture */
+  .texture-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--color-brand-500) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--color-brand-500) 5%, transparent) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .texture-dots {
+    background-image: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--color-brand-500) 14%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 18px 18px;
+  }
+
+  /* Thin scrollbars for panels */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-surface-300) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: var(--color-surface-300);
+    border-radius: 999px;
+  }
+
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
