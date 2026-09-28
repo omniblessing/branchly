@@ -1,0 +1,16 @@
+{
+  // Branchly — Cloudflare Workers static-assets deployment.
+  //
+  // This is a pure client-side Vite SPA (react-router-dom <BrowserRouter />).
+  // There is no Worker entry point / server code, so no "main" is declared.
+  // Workers serves the Vite client build output from ./dist and falls back to
+  // index.html so client-side routes (/discover, /results, /privacy, ...)
+  // resolve when opened directly.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "branchly",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
