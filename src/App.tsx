@@ -12,6 +12,7 @@ import { Privacy } from "./pages/Privacy";
 import { Terms } from "./pages/Terms";
 import { Disclaimer } from "./pages/Disclaimer";
 import { Sources } from "./pages/Sources";
+import { SuJoiyeChe } from "./pages/SuJoiyeChe";
 
 function ScrollToTop() {
   const { pathname, search } = useLocation();
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/specialties" element={<Specialties />} />
           <Route path="/specialty/:id" element={<SpecialtyDetail />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/su-joiye-che" element={<SuJoiyeChe />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
