@@ -46,7 +46,7 @@ if (url.pathname === "/api/rank-list") {
   const requested = (url.searchParams.get("branches") || "")
     .split("|").map(value => value.trim()).filter(Boolean);
 
-  if (!/^\\d+$/.test(rawRank) || !Number.isSafeInteger(rank) || rank < 1 ||
+  if (!/^\d+$/.test(rawRank) || !Number.isSafeInteger(rank) || rank < 1 ||
       requested.length < 1 || requested.length > 16 ||
       requested.some(branch => branch.length > 100)) {
     return respond({ success: false, error: "Invalid rank or branch selection" }, 400);
@@ -56,10 +56,10 @@ if (url.pathname === "/api/rank-list") {
     .toLowerCase()
     .normalize("NFKD")
     .replace(/[()]/g, " ")
-    .replace(/\\b(md|ms|dnb|diploma|degree|in)\\b/g, " ")
+    .replace(/\b(md|ms|dnb|diploma|degree|in)\b/g, " ")
     .replace(/[^a-z0-9]+/g, " ")
     .trim()
-    .replace(/\\s+/g, " ");
+    .replace(/\s+/g, " ");
 
   try {
     const candidates = await readCandidateRows(env);
