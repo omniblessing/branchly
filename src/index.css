@@ -4,41 +4,43 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Brand — deep medical navy / blue */
-  --color-brand-950: #0b1730;
-  --color-brand-900: #0f1b3d;
-  --color-brand-800: #103055;
-  --color-brand-700: #16406f;
-  --color-brand-600: #1d5490;
-  --color-brand-500: #2569b3;
-  --color-brand-400: #4a8bd0;
-  --color-brand-300: #7cb0e5;
-  --color-brand-200: #b3d1f2;
-  --color-brand-100: #dbeafc;
-  --color-brand-50: #eff6fe;
+  /* Brand — deep ink navy for a more confident, professional UI */
+  --color-brand-950: #101820;
+  --color-brand-900: #172631;
+  --color-brand-800: #203744;
+  --color-brand-700: #2c4d5a;
+  --color-brand-600: #386572;
+  --color-brand-500: #477f88;
+  --color-brand-400: #6b9da0;
+  --color-brand-300: #9bbdb8;
+  --color-brand-200: #c4d9d2;
+  --color-brand-100: #e0ebe6;
+  --color-brand-50: #f0f5f2;
 
-  /* Accent — teal / cyan */
-  --color-accent-700: #0e7490;
-  --color-accent-600: #0891a8;
-  --color-accent-500: #0fbab6;
-  --color-accent-400: #14c8c2;
-  --color-accent-300: #67d6e2;
-  --color-accent-100: #cff5fa;
-  --color-accent-50: #edfbfd;
+  /* Accent — restrained teal, reserved for interactive highlights */
+  --color-accent-700: #155e63;
+  --color-accent-600: #19777b;
+  --color-accent-500: #238b8b;
+  --color-accent-400: #49a4a0;
+  --color-accent-300: #8bc5bb;
+  --color-accent-200: #b6ddd4;
+  --color-accent-100: #dcefe9;
+  --color-accent-50: #f0f7f4;
 
-  /* Surfaces — very light cool grays */
+  /* Surfaces — neutral off-white, with clear separation between layers */
   --color-surface-0: #ffffff;
-  --color-surface-50: #f7f9fb;
-  --color-surface-100: #f0f3f7;
-  --color-surface-200: #e4e9f0;
-  --color-surface-300: #d2dae4;
+  --color-surface-50: #f6f7f5;
+  --color-surface-100: #edf0ed;
+  --color-surface-200: #dfe5e1;
+  --color-surface-300: #c8d2cc;
 
-  /* Ink */
-  --color-ink-900: #0d1826;
-  --color-ink-700: #2c3b50;
-  --color-ink-500: #55657c;
-  --color-ink-400: #74849a;
-  --color-ink-300: #9aa8ba;
+  /* Ink — high-contrast text and a dedicated deepest surface token */
+  --color-ink-950: #101820;
+  --color-ink-900: #17212b;
+  --color-ink-700: #34434b;
+  --color-ink-500: #53636a;
+  --color-ink-400: #697a80;
+  --color-ink-300: #8b999d;
 
   /* Semantic */
   --color-fit-strong: #0d9465;
