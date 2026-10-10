@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { GitCompareArrows, LayoutGrid, Stethoscope } from "lucide-react";
+import { BarChart3, GitCompareArrows, LayoutGrid, Stethoscope } from "lucide-react";
 import { Logo } from "./Logo";
 import { cn } from "../../utils/cn";
 import { useDiscovery } from "../../store/useDiscovery";
@@ -51,6 +51,9 @@ export function AppShell() {
             </NavItem>
             <NavItem to="/compare" icon={<GitCompareArrows className="h-4 w-4" />}>
               Compare
+            </NavItem>
+            <NavItem to="/su-joiye-che" icon={<BarChart3 className="h-4 w-4" />}>
+              Su Joiye Che
             </NavItem>
           </nav>
 
