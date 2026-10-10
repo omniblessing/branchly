@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Activity, ArrowRight, BarChart3, ShieldCheck } from "lucide-react";
 
+const API_BASE = "https://su-joiye-che.thorfin662.workers.dev";
+
 const BRANCHES = [
   "General Medicine",
   "Radiodiagnosis",
@@ -20,21 +22,67 @@ const BRANCHES = [
   "Other",
 ];
 
+type CompetitionStats = {
+  totalCandidates: number;
+  sameBranchCandidates: number;
+  betterRankSameBranch: number;
+  source: string;
+  disclaimer: string;
+};
+
 export function SuJoiyeChe() {
   const [rank, setRank] = useState("");
   const [branch, setBranch] = useState(BRANCHES[0]);
   const [notice, setNotice] = useState("");
+  const [stats, setStats] = useState<CompetitionStats | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const parsedRank = Number(rank);
-    if (!Number.isInteger(parsedRank) || parsedRank < 1) {
-      setNotice("Enter a valid rank greater than zero.");
+    const parsedRank = Number(rank.replace(/,/g, "").trim());
+    if (!Number.isSafeInteger(parsedRank) || parsedRank < 1) {
+      setStats(null);
+      setNotice("Enter a valid whole-number rank greater than zero.");
       return;
     }
-    setNotice(
-      "Your details are ready, but live competition data has not been connected yet. No competition count has been estimated or invented.",
-    );
+
+    setLoading(true);
+    setStats(null);
+    setNotice("");
+
+    try {
+      const params = new URLSearchParams({
+        rank: String(parsedRank),
+        branch,
+      });
+      const response = await fetch(`${API_BASE}/api/competition?${params}`);
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Competition data is temporarily unavailable.");
+      }
+
+      setStats({
+        totalCandidates: data.totalCandidates,
+        sameBranchCandidates: data.sameBranchCandidates,
+        betterRankSameBranch: data.betterRankSameBranch,
+        source: data.source,
+        disclaimer: data.disclaimer,
+      });
+    } catch (error) {
+      setNotice(
+        error instanceof Error
+          ? `${error.message} Check that the Worker allows your live Branchly website origin.`
+          : "Competition data is temporarily unavailable. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function clearResults() {
+    setNotice("");
+    setStats(null);
   }
 
   return (
@@ -75,8 +123,8 @@ export function SuJoiyeChe() {
             Where do you stand?
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-ink-500">
-            Enter your counselling rank and the branch you are considering. The live comparison
-            will become available after the secure data connection is configured.
+            Enter your counselling rank and the branch you are considering to compare against
+            submitted preferences.
           </p>
 
           <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
@@ -95,7 +143,7 @@ export function SuJoiyeChe() {
                 value={rank}
                 onChange={(event) => {
                   setRank(event.target.value);
-                  setNotice("");
+                  clearResults();
                 }}
                 placeholder="e.g. 12500"
                 className="w-full rounded-lg border border-surface-300 bg-white px-3.5 py-3 text-sm text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
@@ -112,7 +160,7 @@ export function SuJoiyeChe() {
                 value={branch}
                 onChange={(event) => {
                   setBranch(event.target.value);
-                  setNotice("");
+                  clearResults();
                 }}
                 className="w-full rounded-lg border border-surface-300 bg-white px-3.5 py-3 text-sm text-ink-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
               >
@@ -124,16 +172,37 @@ export function SuJoiyeChe() {
 
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              disabled={loading}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:cursor-wait disabled:opacity-60"
             >
-              Check my standing
-              <ArrowRight className="h-4 w-4" />
+              {loading ? "Checking submitted data…" : "Check my standing"}
+              {!loading && <ArrowRight className="h-4 w-4" />}
             </button>
           </form>
 
           {notice && (
-            <div role="status" aria-live="polite" className="mt-4 rounded-lg border border-accent-200 bg-accent-50 p-3.5 text-sm leading-relaxed text-ink-700">
+            <div role="status" aria-live="polite" className="mt-4 rounded-lg border border-fit-low/20 bg-fit-low-bg p-3.5 text-sm leading-relaxed text-ink-700">
               {notice}
+            </div>
+          )}
+
+          {stats && (
+            <div role="status" aria-live="polite" className="mt-5 space-y-3">
+              <div className="rounded-xl border border-accent-200 bg-accent-50 p-4">
+                <p className="text-sm font-medium text-ink-600">Submitted candidates with a better rank who selected {branch}</p>
+                <p className="mt-1 text-3xl font-semibold tabular-nums text-ink-950">{stats.betterRankSameBranch.toLocaleString("en-IN")}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-lg border border-surface-200 bg-white p-3">
+                  <p className="text-xs leading-relaxed text-ink-500">Submitted candidates for this branch</p>
+                  <p className="mt-1 text-xl font-semibold tabular-nums text-ink-900">{stats.sameBranchCandidates.toLocaleString("en-IN")}</p>
+                </div>
+                <div className="rounded-lg border border-surface-200 bg-white p-3">
+                  <p className="text-xs leading-relaxed text-ink-500">Ranked submissions in dataset</p>
+                  <p className="mt-1 text-xl font-semibold tabular-nums text-ink-900">{stats.totalCandidates.toLocaleString("en-IN")}</p>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed text-ink-500">{stats.disclaimer} Counts reflect the current submitted dataset, not all candidates or official allotments.</p>
             </div>
           )}
         </div>
@@ -145,13 +214,12 @@ export function SuJoiyeChe() {
             </div>
             <h2 className="mt-4 text-lg font-semibold text-ink-900">Competition insights</h2>
             <p className="mt-2 text-sm leading-relaxed text-ink-500">
-              Once connected, this panel can count submitted candidates with a better numerical
-              rank who selected the same branch. It will not treat preferences as confirmed
-              admissions.
+              Compare your rank against candidates who submitted the same branch preference.
+              These preferences are not confirmed admissions.
             </p>
             <div className="mt-4 rounded-lg border border-surface-200 bg-surface-50 p-3 text-sm text-ink-600">
-              <span className="font-semibold text-ink-800">Live data: not connected</span>
-              <p className="mt-1">Competition counts are intentionally hidden until the source is verified.</p>
+              <span className="font-semibold text-ink-800">Source: submitted preferences</span>
+              <p className="mt-1">The comparison uses aggregate counts only. No individual candidate records are returned to this page.</p>
             </div>
           </div>
 
@@ -161,8 +229,8 @@ export function SuJoiyeChe() {
               <h2 className="font-semibold">Privacy first</h2>
             </div>
             <p className="mt-2 text-sm leading-relaxed text-ink-500">
-              Public results should contain aggregate counts only. Candidate names, phone numbers,
-              marks, and timestamps must never be sent to this public page.
+              Public results contain aggregate counts only. Candidate names, phone numbers,
+              marks, and timestamps are not sent to this public page.
             </p>
           </div>
 
